@@ -1,2 +1,0 @@
-c:\users\civieramau\documents\visual studio 2013\Projects\Mega-Retro\Mega-Retro\obj\Debug\Mega-Retro.njsprojResolveAssemblyReference.cache
-c:\users\civieramau\documents\visual studio 2013\Projects\Mega-Retro\Mega-Retro\bin\Microsoft.NodejsTools.WebRole.dll

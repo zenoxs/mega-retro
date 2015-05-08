@@ -5,9 +5,7 @@
   "main": "index.html",
   "nodejs": true,
   "node-main": "app.js",
-  "author": {
-    "name": "civieramau"
-  },
+  "author": "Amaury CIVIER",
   "window": {
     "title": "Mega-Retro",
     "toolbar": false,
@@ -15,7 +13,23 @@
     "height": 500,
     "position": "mouse"
   },
-  "dependencies": {
-    "phaser": "^2.3.0"
+  "dependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zenoxs/mega-retro.git"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zenoxs/mega-retro/issues"
+  },
+  "homepage": "https://github.com/zenoxs/mega-retro",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-typescript": "^0.6.1",
+    "typescript": "^1.4.1"
   }
 }
