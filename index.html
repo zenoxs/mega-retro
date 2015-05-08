@@ -1,15 +1,22 @@
-<!DOCTYPE html>
-<html>
-  
-  <head>
-    <title>Hello World!</title>
-  </head>
-  
-  <body>
-    <h1>Hello World!</h1>We are using node.js
-    <script>
-      require('nw.gui').Window.get().showDevTools();
-      document.write(process.version);
-    </script>.</body>
+﻿<!DOCTYPE html>
 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Hello</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body onload="process.mainModule.exports.callback0()">
+    <div class="canvas-game"></div>
+</body>
 </html>
+<script>
+    require('nw.gui').Window.get().showDevTools()
+</script>
+<script src="./node_modules/phaser/build/phaser.js"></script>
+<script src="client.js"></script>

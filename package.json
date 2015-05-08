@@ -1,0 +1,21 @@
+{
+  "name": "Mega-Retro",
+  "version": "0.0.0",
+  "description": "Mega-Retro",
+  "main": "index.html",
+  "nodejs": true,
+  "node-main": "app.js",
+  "author": {
+    "name": "civieramau"
+  },
+  "window": {
+    "title": "Mega-Retro",
+    "toolbar": false,
+    "width": 800,
+    "height": 500,
+    "position": "mouse"
+  },
+  "dependencies": {
+    "phaser": "^2.3.0"
+  }
+}
