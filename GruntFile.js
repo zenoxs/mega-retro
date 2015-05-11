@@ -6,12 +6,16 @@ module.exports = function (grunt) {
         pkg: grunt.file.readJSON('package.json'),
         typescript: {
             base: {
-                src: ['src/node/**/*.ts'],
-                dest: 'build/app.js',
+                files: [
+                    { src: 'src/node/**/*.ts', dest: 'build' },
+                    { src: 'src/browser/**/*.ts', dest: 'build/client.js' },
+                ],
                 options: {
-                    module: 'amd',
+                    module: 'commonjs',
                     target: 'es5',
-                    watch: 'src/node'
+                    watch: 'src',
+                    sourcemap: false,
+                    declaration: false
                 },
             },
         },

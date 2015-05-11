@@ -1,20 +1,27 @@
 ﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <meta charset="utf-8" />
-    <title>Hello</title>
-    <style>
-        html, body {
-            margin: 0;
-            padding: 0;
-        }
-    </style>
-</head>
-<body onload="process.mainModule.exports.callback0()">
-</body>
+    
+    <head>
+        <meta charset="utf-8" />
+        <title>Hello</title>
+        <style>
+            html, body {
+                margin: 0;
+                padding: 0;
+                width:100%;
+                height: 100%;
+                background-color: black;
+            }
+        </style>
+        <script src="../build/client.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function(){
+               new process.mainModule.exports.App(new Browser());
+             });
+        </script>
+    </head>
+    
+    <body onload="">
+        <canvas id="process-canvas"></canvas>
+    </body>
 </html>
-<script>
-    require('nw.gui').Window.get().showDevTools()
-</script>
-<script src="./node_modules/phaser/build/phaser.js"></script>
-<script src="client.js"></script>

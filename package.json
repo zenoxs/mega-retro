@@ -2,9 +2,9 @@
   "name": "Mega-Retro",
   "version": "0.0.0",
   "description": "Mega-Retro",
-  "main": "index.html",
+  "main": "src/index.html",
   "nodejs": true,
-  "node-main": "app.js",
+  "node-main": "build/src/node/app.js",
   "author": "Amaury CIVIER",
   "window": {
     "title": "Mega-Retro",
