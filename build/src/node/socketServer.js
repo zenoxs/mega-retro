@@ -1,6 +1,3 @@
-/// <reference path="../../typings/node/node.d.ts"/>
-/// <reference path="../../typings/socket.io/socket.io.d.ts"/>
-/// <reference path="../../typings/async/async.d.ts"/>
 var io = require('socket.io');
 var socketServer = (function () {
     function socketServer(httpServer) {

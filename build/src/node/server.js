@@ -1,25 +1,25 @@
-/// <reference path="../../typings/node/node.d.ts"/>
-/// <reference path="../../typings/socket.io/socket.io.d.ts"/>
-/// <reference path="../../typings/async/async.d.ts"/>
 var http = require('http');
 var async = require('async');
 var os = require('os');
+var events = require('events');
+var url = require('url');
 var Server = (function () {
-    function Server() {
+    function Server(callback) {
         var _this = this;
         this.port = 1337;
-        // waterfall for init componements server
         async.waterfall([
             function (callback) {
-                // retrieve adress
-                _this.getIp(function (err, ip) {
+                _this.eventEmitter = new events.EventEmitter();
+                callback();
+            },
+            function (callback) {
+                _this._getIp(function (err, ip) {
                     _this.address = ip;
                     callback(err);
                 });
             },
             function (callback) {
-                // create http server
-                _this.createHttpServer(function (err, httpServer) {
+                _this._createHttpServer(function (err, httpServer) {
                     _this.httpServer = httpServer;
                     callback(err);
                 });
@@ -28,20 +28,53 @@ var Server = (function () {
             if (err)
                 console.log(err);
             console.log('Server running at http://' + _this.address + ':' + _this.port);
+            callback();
         });
     }
-    Server.prototype.createHttpServer = function (callback) {
-        var httpServer = http.createServer(function (req, res) {
-            res.writeHead(200, { 'Content-Type': 'text/plain' });
-            res.end('Hello World\n');
+    Server.prototype.listenServer = function (callback) {
+        console.log('listen player');
+        this.eventEmitter.on('connectPlayer', function (socket) {
+            console.log(socket);
+            callback();
+        });
+    };
+    Server.prototype._createHttpServer = function (callback) {
+        var _this = this;
+        var httpServer = http.createServer(function (request, response) {
+            var url_parts = url.parse(request.url, true);
+            var query = url_parts.query;
+            var result;
+            if (query.hasOwnProperty('action')) {
+                var action = query.action;
+                switch (action) {
+                    case 'scan':
+                        result = { data: {
+                            address: _this.address,
+                            name: os.hostname(),
+                            port: _this.port
+                        }, err: false };
+                        break;
+                    case 'join':
+                        break;
+                    default:
+                        result = { err: 'unknow action' };
+                }
+            }
+            else {
+                result = { err: 'no action found' };
+            }
+            response.writeHead(200, "OK", {
+                "access-control-allow-origin": "*",
+                "content-type": "application/json",
+            });
+            return response.end(JSON.stringify(result));
         }).listen(this.port, this.address, 511, function () {
             callback(null, httpServer);
         });
     };
-    Server.prototype.createSocketServer = function () {
-        //var test = io(this.createHttpServer);
+    Server.prototype._createSocketServer = function () {
     };
-    Server.prototype.getIp = function (callback) {
+    Server.prototype._getIp = function (callback) {
         var network = os.networkInterfaces();
         var ipv4 = network.en1[1].address;
         callback(null, ipv4);

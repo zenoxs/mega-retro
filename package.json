@@ -9,11 +9,13 @@
   "window": {
     "title": "Mega-Retro",
     "toolbar": false,
-    "width": 800,
-    "height": 500,
+    "width":  1280,
+    "height": 720,
     "position": "mouse"
   },
-  "dependencies": {},
+  "dependencies": {
+    "konva": "^0.9.0"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -27,9 +29,13 @@
   },
   "homepage": "https://github.com/zenoxs/mega-retro",
   "devDependencies": {
+    "browserify": "^10.2.1",
     "grunt": "^0.4.5",
+    "grunt-browserify": "^3.8.0",
     "grunt-contrib-watch": "^0.6.1",
+    "grunt-ts": "^4.1.0",
     "grunt-typescript": "^0.6.1",
+    "tsify": "^0.11.0",
     "typescript": "^1.4.1"
   }
 }

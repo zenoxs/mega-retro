@@ -15,7 +15,10 @@
 *                                               *
 ************************************************/
 declare var process: NodeJS.Process;
-declare var global: any;
+//declare var global: any;
+interface global {
+	
+}
 
 declare var __filename: string;
 declare var __dirname: string;

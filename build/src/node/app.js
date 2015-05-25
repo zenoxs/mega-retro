@@ -1,12 +1,13 @@
-/// <reference path="../../typings/node/node.d.ts"/>
-/// <reference path="../../typings/mega-retro/browser.d.ts"/>
-///<reference path="server.ts"/>
 var Server = require('./server');
+var Room = require('./room');
 var App = (function () {
     function App(client) {
-        this.server = new Server();
+        var _this = this;
+        console.log('Launch app');
+        this.server = new Server(function () {
+            _this.room = new Room(_this.server);
+        });
     }
     return App;
 })();
-
 exports.App = App;

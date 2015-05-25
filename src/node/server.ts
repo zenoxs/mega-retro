@@ -6,51 +6,122 @@ import http = require('http');
 import async = require('async');
 import os = require('os');
 import io = require('socket.io');
+import events = require('events');
+import url = require('url');
+
+interface QueryObject{
+    action : string;
+}
 
 class Server {
-    
-    port: number = 1337;
-    httpServer : http.Server;
-    address: string;
 
-    constructor() {
-        // waterfall for init componements server
+    port: number = 1337;
+    httpServer: http.Server;
+    address: string;
+    eventEmitter: events.EventEmitter;
+
+
+    constructor(callback: () => void) {
+        // Waterfall for init componements server
         async.waterfall([
             (callback) => {
-                // retrieve adress
-                this.getIp((err, ip) => {
+                // Init EventEmmiter inside the server
+                this.eventEmitter = new events.EventEmitter();
+                callback();
+            },
+            (callback) => {
+                // Retrieve local network adress
+                this._getIp((err, ip) => {
                     this.address = ip;
                     callback(err);
                 });
             },
             (callback) => {
-                 // create http server
-                this.createHttpServer((err, httpServer) => {
+                // Create the http Server
+                this._createHttpServer((err, httpServer) => {
                     this.httpServer = httpServer;
                     callback(err);
                 });
             }
         ], (err, result) => {
-           if(err) console.log(err);
-           
-            console.log('Server running at http://' + this.address + ':'+this.port);
+                if (err) console.log(err);
+                
+                console.log('Server running at http://' + this.address + ':' + this.port);
+                callback();
+            });
+    }
+
+    listenServer(callback: () => void): void {
+        console.log('listen player');
+        this.eventEmitter.on('connectPlayer', function(socket) {
+            console.log(socket);
+            callback();
         });
     }
-    
-    createHttpServer(callback : (err: any, httpServer:http.Server) => void): void {
-        var httpServer : http.Server = http.createServer(function(req, res) {
-            res.writeHead(200, { 'Content-Type': 'text/plain' });
-            res.end('Hello World\n');
-        }).listen(this.port, this.address, 511, function(){
-            callback(null, httpServer)
+
+    private _createHttpServer(callback: (err: any, httpServer: http.Server) => void): void {
+    	
+        // Create the httpServer
+        var httpServer: http.Server = http.createServer((request, response) => {
+            
+            //response.writeHead(200, { 'Content-Type': 'application/json' });
+            
+            var url_parts: url.Url = url.parse(request.url, true);
+            var query: any = url_parts.query;
+            
+            var result;
+            
+            if(query.hasOwnProperty('action')){
+            
+                var action = query.action;
+            
+                switch(action){
+                    case 'scan' :
+                        result = { data :{
+                            address : this.address,
+                            name : os.hostname(),
+                            port : this.port
+                        },
+                        err : false};
+                        break;
+                    case 'join':
+                    
+                        break;
+                    default:
+                        result = { err : 'unknow action'};
+                }
+            }else{
+                result = { err : 'no action found'};
+            }
+            
+            // write header for all access cross origin
+        	response.writeHead(
+                200,
+                "OK",
+                {
+                    "access-control-allow-origin": "*",
+                    "content-type": "application/json",
+                }
+            );
+            
+            return response.end(JSON.stringify(result));
+        }).listen(this.port, this.address, 511, () => {
+            callback(null, httpServer);
         });
+
+        /*httpServer.on('request', (request, socket, head) => {
+            var url_parts = url.parse(request.url, true);
+            var query = url_parts.query;
+            
+            this.eventEmitter.emit('connectPlayer', socket);
+        });*/
     }
-    
-    createSocketServer() : any {
+
+    private _createSocketServer(): any {
         //var test = io(this.createHttpServer);
     }
 
-    getIp(callback : (err: any, ipv4:string) => void): void {
+    private _getIp(callback: (err: any, ipv4: string) => void): void {
         var network = os.networkInterfaces();
         var ipv4 = network.en1[1].address;
 

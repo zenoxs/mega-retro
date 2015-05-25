@@ -10,10 +10,23 @@
                 padding: 0;
                 width:100%;
                 height: 100%;
-                background-color: black;
+                /*background-color: black;*/
+            }
+            #process-canvas {
+                width: 100%;
+                height: 100%;
+            }
+            .konvajs-content{
+                width: 100% !important;
+                height: 100% !important;
+            }
+             canvas{
+                width: 100% !important;
+                height: 100% !important;
             }
         </style>
-        <script src="../build/client.js"></script>
+        <script src="../node_modules/konva/konva.js"></script>
+        <script src="../build/src/browser.js"></script>
         <script>
             document.addEventListener('DOMContentLoaded', function(){
                new process.mainModule.exports.App(new Browser());
@@ -22,6 +35,7 @@
     </head>
     
     <body onload="">
-        <canvas id="process-canvas"></canvas>
+        <div id="process-canvas"></div>
     </body>
+
 </html>
