@@ -1,3 +1,3 @@
-declare class Room{
+declare class RoomController{
 	constructor();
 }

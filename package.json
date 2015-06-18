@@ -4,17 +4,18 @@
   "description": "Mega-Retro",
   "main": "src/index.html",
   "nodejs": true,
-  "node-main": "build/src/node/app.js",
+  "node-main": "build/src/node/core/app.js",
   "author": "Amaury CIVIER",
   "window": {
     "title": "Mega-Retro",
     "toolbar": false,
-    "width":  1280,
+    "width": 1280,
     "height": 720,
     "position": "mouse"
   },
   "dependencies": {
-    "konva": "^0.9.0"
+    "konva": "^0.9.0",
+    "mdns": "^2.2.9"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

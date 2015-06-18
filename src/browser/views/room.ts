@@ -3,9 +3,11 @@
 
 class RoomView {
 	stage: Konva.Stage;
+	room: Room;
 
-	constructor(stage: Konva.Stage) {
-
+	constructor(stage: Konva.Stage, room : Room) {
+		
+		this.room = room;
 		this.stage = stage;
 
 		var layer = new Konva.Layer();

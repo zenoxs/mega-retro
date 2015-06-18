@@ -3,12 +3,12 @@
 /// <reference path="../../typings/konva/konva.d.ts"/>
 /// <reference path="../../typings/mega-retro/node.d.ts"/>
 
-import ViewManager = require('./viewManager');
+import View = require('./view');
 
 class Browser {
 
 	gui: NW_GUI;
-	viewManager: ViewManager;
+	view: View;
 	stage: Konva.Stage;
 
 	constructor(debug: boolean = true) {
@@ -27,7 +27,7 @@ class Browser {
 		});
 		
 		// instance new ViewManager
-		this.viewManager = new ViewManager(this.stage);
+		this.view = new View(this.stage);
 	}
 }
 

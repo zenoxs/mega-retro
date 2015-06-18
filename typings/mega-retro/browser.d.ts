@@ -1,20 +1,20 @@
 ﻿/// <reference path="../../typings/konva/konva.d.ts"/>
+/// <reference path="./node.d.ts"/>
 
 declare class Browser{
 	stage : Konva.Stage;
-	viewManager : ViewManager;
+	view : View;
 	
 	constructor();
 }
 
-declare class ViewManager{
+declare class View{
 	
 	stage : Konva.Stage;
-	
-	room() : RoomView;
+	room(room : RoomController) : RoomView;
 }
 
 declare class RoomView{
-	construct();
+	constructor(stage: Konva.Stage, room : RoomController);
 }
 
