@@ -65,6 +65,7 @@ class Server {
         var httpServer: http.Server = http.createServer((request, response) => {
             
             //response.writeHead(200, { 'Content-Type': 'application/json' });
+          
             
             var url_parts: url.Url = url.parse(request.url, true);
             var query: any = url_parts.query;
@@ -84,9 +85,6 @@ class Server {
                         },
                         err : false};
                         break;
-                    case 'join':
-                    
-                        break;
                     default:
                         result = { err : 'unknow action'};
                 }
@@ -104,6 +102,8 @@ class Server {
                 }
             );
             
+            console.log(result);
+            
             return response.end(JSON.stringify(result));
         }).listen(this.port, this.address, 511, () => {
             callback(null, httpServer);
@@ -115,10 +115,6 @@ class Server {
             
             this.eventEmitter.emit('connectPlayer', socket);
         });*/
-    }
-
-    private _createSocketServer(): any {
-        //var test = io(this.createHttpServer);
     }
 
     private _getIp(callback: (err: any, ipv4: string) => void): void {

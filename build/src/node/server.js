@@ -54,8 +54,6 @@ var Server = (function () {
                             port: _this.port
                         }, err: false };
                         break;
-                    case 'join':
-                        break;
                     default:
                         result = { err: 'unknow action' };
                 }
@@ -67,12 +65,11 @@ var Server = (function () {
                 "access-control-allow-origin": "*",
                 "content-type": "application/json",
             });
+            console.log(result);
             return response.end(JSON.stringify(result));
         }).listen(this.port, this.address, 511, function () {
             callback(null, httpServer);
         });
-    };
-    Server.prototype._createSocketServer = function () {
     };
     Server.prototype._getIp = function (callback) {
         var network = os.networkInterfaces();

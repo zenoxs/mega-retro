@@ -5,7 +5,7 @@ var App = (function () {
         var _this = this;
         console.log('Launch app');
         this.server = new Server(function () {
-            _this.room = new Room(_this.server);
+            _this.room = new Room(_this.server, client);
         });
     }
     return App;

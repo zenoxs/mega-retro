@@ -1,4 +1,7 @@
 /// <reference path="../../typings/konva/konva.d.ts"/>
+/// <reference path="../../typings/mega-retro/node.d.ts"/>
+
+import RoomView = require('./views/room');
 
 class ViewManager {
 
@@ -8,21 +11,8 @@ class ViewManager {
 		this.stage = stage;
 	}
 
-	loadRoom() {
-		var layer = new Konva.Layer();
-
-		var circle = new Konva.Circle({
-			x: this.stage.getWidth() / 2,
-			y: this.stage.getHeight() / 2,
-			radius: 70,
-			fill: 'red',
-			stroke: 'black',
-			strokeWidth: 4
-		});
-
-		layer.add(circle);
-
-		this.stage.add(layer);
+	room() {
+		return new RoomView(this.stage);
 	}
 }
 

@@ -11,12 +11,11 @@ class App {
     server : Server;
     room : Room;
     
-
     constructor(client : Browser) {
         console.log('Launch app');
         
         this.server = new Server(()=>{
-            this.room = new Room(this.server);
+            this.room = new Room(this.server, client);
             
         });
     }
