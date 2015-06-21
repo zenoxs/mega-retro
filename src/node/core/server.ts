@@ -51,7 +51,7 @@ class Server {
             (callback)=>{
                 
                 // Create the mdns advertissement
-                this.ad = mdns.createAdvertisement(mdns.tcp('mega-retro'), 511,
+                this.ad = mdns.createAdvertisement(mdns.tcp('mega-retro'), this.port,
                 {txtRecord:{
                     name : 'test'
                 } } );
@@ -122,7 +122,7 @@ class Server {
             
             return response.end(JSON.stringify(result));
             
-        }).listen(this.port, this.address, 511, () => {        
+        }).listen(this.port, this.address, this.port, () => {        
             callback(null, httpServer);
         });
 
@@ -135,10 +135,21 @@ class Server {
     }
 
     private _getIp(callback: (err: any, ipv4: string) => void): void {
+        
         var network = os.networkInterfaces();
-        var ipv4 = network.en0[1].address;
+        var ipv4 : any;
+        var err : any;
+        
+        if(network.hasOwnProperty('en0')){
+             ipv4 = network.en0[1].address;
+        }else if(network.hasOwnProperty('en1')){
+            ipv4 = network.en1[1].address;
+        }else{
+            alert('No network card found, unable to create the server.');
+            err = "No network card found, unable to create the server";
+        }
 
-        callback(null, ipv4);
+        callback(err, ipv4);
     }
 }
 

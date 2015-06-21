@@ -26,7 +26,7 @@ var Server = (function () {
                 });
             },
             function (callback) {
-                _this.ad = mdns.createAdvertisement(mdns.tcp('mega-retro'), 511, { txtRecord: {
+                _this.ad = mdns.createAdvertisement(mdns.tcp('mega-retro'), _this.port, { txtRecord: {
                     name: 'test'
                 } });
                 _this.ad.start();
@@ -75,14 +75,25 @@ var Server = (function () {
             });
             console.log(result);
             return response.end(JSON.stringify(result));
-        }).listen(this.port, this.address, 511, function () {
+        }).listen(this.port, this.address, this.port, function () {
             callback(null, httpServer);
         });
     };
     Server.prototype._getIp = function (callback) {
         var network = os.networkInterfaces();
-        var ipv4 = network.en0[1].address;
-        callback(null, ipv4);
+        var ipv4;
+        var err;
+        if (network.hasOwnProperty('en0')) {
+            ipv4 = network.en0[1].address;
+        }
+        else if (network.hasOwnProperty('en1')) {
+            ipv4 = network.en1[1].address;
+        }
+        else {
+            alert('No network card found, unable to create the server.');
+            err = "No network card found, unable to create the server";
+        }
+        callback(err, ipv4);
     };
     return Server;
 })();
