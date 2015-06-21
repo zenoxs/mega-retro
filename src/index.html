@@ -28,13 +28,13 @@
         <script src="../node_modules/konva/konva.js"></script>
         <script src="../build/src/browser.js"></script>
         <script>
-            document.addEventListener('DOMContentLoaded', function(){
+            /*document.addEventListener('DOMContentLoaded', function(){
                new process.mainModule.exports.App(new Browser());
-             });
+             });*/
         </script>
     </head>
     
-    <body onload="">
+    <body onload="process.mainModule.exports.App(new Browser())">
         <div id="process-canvas"></div>
     </body>
 

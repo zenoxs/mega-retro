@@ -12,26 +12,28 @@ import url = require('url');
 import mdns = require('mdns');
 
 interface QueryObject{
-    action : string;
+    action: string;
 }
 
 class Server {
-
+	ad: MDNS.Advertisement;
     port: number = 1337;
     httpServer: http.Server;
     address: string;
     eventEmitter: events.EventEmitter;
-
-
-    constructor(callback: () => void) {
+    
+	constructor(callback: () => void) {
+        
         // Waterfall for init componements server
         async.waterfall([
             (callback) => {
+                
                 // Init EventEmmiter inside the server
                 this.eventEmitter = new events.EventEmitter();
                 callback();
             },
             (callback) => {
+                
                 // Retrieve local network adress
                 this._getIp((err, ip) => {
                     this.address = ip;
@@ -39,11 +41,24 @@ class Server {
                 });
             },
             (callback) => {
+                
                 // Create the http Server
                 this._createHttpServer((err, httpServer) => {
                     this.httpServer = httpServer;
                     callback(err);
                 });
+            },
+            (callback)=>{
+                
+                // Create the mdns advertissement
+                this.ad = mdns.createAdvertisement(mdns.tcp('mega-retro'), 511,
+                {txtRecord:{
+                    name : 'test'
+                } } );
+                
+                this.ad.start();
+                
+                callback();
             }
         ], (err, result) => {
                 if (err) console.log(err);
@@ -67,11 +82,7 @@ class Server {
         var httpServer: http.Server = http.createServer((request, response) => {
             
             //response.writeHead(200, { 'Content-Type': 'application/json' });
-            
-            var ad = mdns.createAdvertisement(mdns.tcp('http'), 511);
-            ad.start();
-          
-            
+
             var url_parts: url.Url = url.parse(request.url, true);
             var query: any = url_parts.query;
             
@@ -111,9 +122,7 @@ class Server {
             
             return response.end(JSON.stringify(result));
             
-        }).listen(this.port, this.address, 511, () => {
-            
-            
+        }).listen(this.port, this.address, 511, () => {        
             callback(null, httpServer);
         });
 
@@ -127,7 +136,7 @@ class Server {
 
     private _getIp(callback: (err: any, ipv4: string) => void): void {
         var network = os.networkInterfaces();
-        var ipv4 = network.en1[1].address;
+        var ipv4 = network.en0[1].address;
 
         callback(null, ipv4);
     }

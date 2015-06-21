@@ -6,16 +6,15 @@ import Server = require('./server');
 import RoomController = require('../Controllers/RoomController');
 
 class App {
-    
-    server : Server;
-    controller : any;
-    
-    constructor(client : Browser) {
+    server: Server;
+    controller: any;
+
+    constructor(client: Browser) {
         console.log('Launch app');
-        
-        this.server = new Server(()=>{
+
+        this.server = new Server(() => {
             this.controller = new RoomController(this.server, client);
-            
+
         });
     }
 }

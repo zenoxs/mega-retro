@@ -24,6 +24,13 @@ var Server = (function () {
                     _this.httpServer = httpServer;
                     callback(err);
                 });
+            },
+            function (callback) {
+                _this.ad = mdns.createAdvertisement(mdns.tcp('mega-retro'), 511, { txtRecord: {
+                    name: 'test'
+                } });
+                _this.ad.start();
+                callback();
             }
         ], function (err, result) {
             if (err)
@@ -42,8 +49,6 @@ var Server = (function () {
     Server.prototype._createHttpServer = function (callback) {
         var _this = this;
         var httpServer = http.createServer(function (request, response) {
-            var ad = mdns.createAdvertisement(mdns.tcp('http'), 511);
-            ad.start();
             var url_parts = url.parse(request.url, true);
             var query = url_parts.query;
             var result;
@@ -76,7 +81,7 @@ var Server = (function () {
     };
     Server.prototype._getIp = function (callback) {
         var network = os.networkInterfaces();
-        var ipv4 = network.en1[1].address;
+        var ipv4 = network.en0[1].address;
         callback(null, ipv4);
     };
     return Server;

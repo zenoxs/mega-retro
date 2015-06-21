@@ -13,6 +13,8 @@ class Browser {
 
 	constructor(debug: boolean = true) {
 		
+		console.log('Browser launch');
+		
 		// display console
 		this.gui = global.window.nwDispatcher.requireNwGui();
 		
