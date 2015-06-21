@@ -1,14 +1,18 @@
 var io = require('socket.io');
-var socketServer = (function () {
-    function socketServer(httpServer) {
+var SocketServer = (function () {
+    function SocketServer(httpServer) {
         this.io = io(httpServer);
         this.io.on('connection', function (socket) {
-            socket.emit('news', { hello: 'world' });
-            socket.on('disconnect', function () {
-                console.log('user disconnected');
+            console.log('connect player');
+            socket.on('disconnect', function (socket) {
+                console.log('disconnect player');
             });
         });
     }
-    return socketServer;
+    SocketServer.prototype.connection = function (callback) {
+    };
+    SocketServer.prototype.disconnect = function (callback) {
+    };
+    return SocketServer;
 })();
-module.exports = socketServer;
+module.exports = SocketServer;

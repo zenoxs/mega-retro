@@ -3,7 +3,7 @@
 import http = require('http');
 import os = require('os');
 import Server = require('./server');
-import RoomController = require('../Controllers/RoomController');
+import RoomController = require('../controllers/roomController');
 
 class App {
     server: Server;
@@ -14,7 +14,8 @@ class App {
 
         this.server = new Server(() => {
             this.controller = new RoomController(this.server, client);
-
+    	   
+           this.controller.index();
         });
     }
 }

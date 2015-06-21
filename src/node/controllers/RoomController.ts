@@ -4,21 +4,16 @@ import http = require('http');
 import os = require('os');
 import Server = require('../core/server');
 import SocketServer = require('../core/socketServer');
+import Controller = require('../core/controller');
 
-class RoomController {
-
-    private _server: Server;
-    public socketServer : SocketServer;
+class RoomController extends Controller{
 
     constructor(server : Server, client : Browser) {
-        
-        this._server = server;
-        this.socketServer = new SocketServer(this._server.httpServer);
-	   
-        /*this._server.listenServer(function(){
-            console.log('connnnneeeeect');
-        });*/
-        client.view.room(this);
+        super(server, client);
+    }
+    
+    public index(): void{
+        this.client.view.room(this);
     }
 }
 

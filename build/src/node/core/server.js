@@ -2,8 +2,8 @@ var http = require('http');
 var async = require('async');
 var os = require('os');
 var events = require('events');
-var url = require('url');
 var mdns = require('mdns');
+var SocketServer = require('./socketServer');
 var Server = (function () {
     function Server(callback) {
         var _this = this;
@@ -22,6 +22,12 @@ var Server = (function () {
             function (callback) {
                 _this._createHttpServer(function (err, httpServer) {
                     _this.httpServer = httpServer;
+                    callback(err);
+                });
+            },
+            function (callback) {
+                _this._createSocketServer(function (err, socketServer) {
+                    _this.socketServer = socketServer;
                     callback(err);
                 });
             },
@@ -46,35 +52,17 @@ var Server = (function () {
             callback();
         });
     };
+    Server.prototype._createSocketServer = function (callback) {
+        var socketServer = new SocketServer(this.httpServer);
+        callback(null, socketServer);
+    };
     Server.prototype._createHttpServer = function (callback) {
-        var _this = this;
         var httpServer = http.createServer(function (request, response) {
-            var url_parts = url.parse(request.url, true);
-            var query = url_parts.query;
-            var result;
-            if (query.hasOwnProperty('action')) {
-                var action = query.action;
-                switch (action) {
-                    case 'scan':
-                        result = { data: {
-                            address: _this.address,
-                            name: os.hostname(),
-                            port: _this.port
-                        }, err: false };
-                        break;
-                    default:
-                        result = { err: 'unknow action' };
-                }
-            }
-            else {
-                result = { err: 'no action found' };
-            }
             response.writeHead(200, "OK", {
                 "access-control-allow-origin": "*",
                 "content-type": "application/json",
             });
-            console.log(result);
-            return response.end(JSON.stringify(result));
+            return response.end();
         }).listen(this.port, this.address, this.port, function () {
             callback(null, httpServer);
         });
@@ -90,7 +78,6 @@ var Server = (function () {
             ipv4 = network.en1[1].address;
         }
         else {
-            alert('No network card found, unable to create the server.');
             err = "No network card found, unable to create the server";
         }
         callback(err, ipv4);

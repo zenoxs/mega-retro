@@ -10,6 +10,8 @@ import io = require('socket.io');
 import events = require('events');
 import url = require('url');
 import mdns = require('mdns');
+import SocketServer = require('./socketServer');
+import Room = require('./room');
 
 interface QueryObject{
     action: string;
@@ -19,6 +21,8 @@ class Server {
 	ad: MDNS.Advertisement;
     port: number = 1337;
     httpServer: http.Server;
+    socketServer : SocketServer;
+    room : Room;
     address: string;
     eventEmitter: events.EventEmitter;
     
@@ -48,6 +52,14 @@ class Server {
                     callback(err);
                 });
             },
+            (callback) => {
+                
+                // Create the socketServer
+                this._createSocketServer((err, socketServer) => {
+                    this.socketServer = socketServer;
+                    callback(err);
+                });
+            },
             (callback)=>{
                 
                 // Create the mdns advertissement
@@ -64,6 +76,7 @@ class Server {
                 if (err) console.log(err);
                 
                 console.log('Server running at http://' + this.address + ':' + this.port);
+                
                 callback();
             });
     }
@@ -75,39 +88,17 @@ class Server {
             callback();
         });
     }
+    
+    private _createSocketServer(callback:(err: any, socketServer : SocketServer ) => void): void{
+        var socketServer = new SocketServer(this.httpServer);
+        callback(null, socketServer);
+    }
 
     private _createHttpServer(callback: (err: any, httpServer: http.Server) => void): void {
     	
         // Create the httpServer
         var httpServer: http.Server = http.createServer((request, response) => {
-            
-            //response.writeHead(200, { 'Content-Type': 'application/json' });
-
-            var url_parts: url.Url = url.parse(request.url, true);
-            var query: any = url_parts.query;
-            
-            var result;
-            
-            if(query.hasOwnProperty('action')){
-            
-                var action = query.action;
-            
-                switch(action){
-                    case 'scan' :
-                        result = { data :{
-                            address : this.address,
-                            name : os.hostname(),
-                            port : this.port
-                        },
-                        err : false};
-                        break;
-                    default:
-                        result = { err : 'unknow action'};
-                }
-            }else{
-                result = { err : 'no action found'};
-            }
-            
+           
             // write header for all access cross origin
         	response.writeHead(
                 200,
@@ -118,9 +109,7 @@ class Server {
                 }
             );
             
-            console.log(result);
-            
-            return response.end(JSON.stringify(result));
+            return response.end();
             
         }).listen(this.port, this.address, this.port, () => {        
             callback(null, httpServer);
@@ -145,7 +134,6 @@ class Server {
         }else if(network.hasOwnProperty('en1')){
             ipv4 = network.en1[1].address;
         }else{
-            alert('No network card found, unable to create the server.');
             err = "No network card found, unable to create the server";
         }
 
