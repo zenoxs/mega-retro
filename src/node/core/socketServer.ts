@@ -4,30 +4,50 @@
 
 import http = require('http');
 import io = require('socket.io');
+import events = require('events');
+import Player = require('../models/player');
 
 class SocketServer {
-
+	
 	io: SocketIO.Server;
-	socket : SocketIO.Socket;
+	socket: SocketIO.Socket;
+	eventEmitter: events.EventEmitter;
 
 	constructor(httpServer: http.Server) {
+
+		this.eventEmitter = new events.EventEmitter();
+
 		this.io = io(httpServer);
 
-		this.io.on('connection', function(socket) {
-			console.log('connect player');
+		this.io.on('connection', (socket) => {
+			this.eventEmitter.emit('connection', socket);
+			
+			socket.on('addPlayer', (dataPlayer : Player.DataPlayer) => {
+				this.eventEmitter.emit('addPlayer', socket, dataPlayer);
+			});
 
-			socket.on('disconnect', function(socket) {
-				console.log('disconnect player');
+			socket.on('disconnect', () => {
+				this.eventEmitter.emit('disconnect', socket);
 			});
 		});
 	}
 
-    public connection(callback: () => void): void {
-
+    public connection(callback: (socket: SocketIO.Socket) => void): void {
+		this.eventEmitter.on('connection', (socket) =>{
+            callback(socket);
+        });
     }
 
-	public disconnect(callback: () => void): void {
+	public disconnect(callback: (socket: SocketIO.Socket) => void): void {
+		this.eventEmitter.on('disconnect', (socket) =>{
+            callback(socket);
+        });
+    }
 
+	public addPlayer(callback: (socket: SocketIO.Socket, dataPlayer : Player.DataPlayer) => void): void {
+		this.eventEmitter.on('addPlayer', (socket: SocketIO.Socket, dataPlayer : Player.DataPlayer) =>{
+            callback(socket, dataPlayer);
+        });
     }
 }
 

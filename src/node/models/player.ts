@@ -3,11 +3,23 @@
 import http = require('http');
 import os = require('os');
 
-class Player {
+module Player {
+   export interface DataPlayer {
+      username: string;
+   }
 
-    constructor() {
+   export class Player {
 
-    }
+      public id: string;
+      public username: string;
+
+      constructor(id : string, username : string) {
+         this.id = id;
+         this.username = username;
+      }
+   }
 }
+
+
 
 export = Player;

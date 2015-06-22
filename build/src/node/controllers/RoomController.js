@@ -7,8 +7,9 @@ var __extends = this.__extends || function (d, b) {
 var Controller = require('../core/controller');
 var RoomController = (function (_super) {
     __extends(RoomController, _super);
-    function RoomController(server, client) {
+    function RoomController(server, client, room) {
         _super.call(this, server, client);
+        this.room = room;
     }
     RoomController.prototype.index = function () {
         this.client.view.room(this);

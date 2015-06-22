@@ -5,14 +5,20 @@ import os = require('os');
 import Server = require('../core/server');
 import SocketServer = require('../core/socketServer');
 import Controller = require('../core/controller');
+import Room = require('../core/room');
 
-class RoomController extends Controller{
-
-    constructor(server : Server, client : Browser) {
-        super(server, client);
-    }
+class RoomController extends Controller {
     
-    public index(): void{
+    room : Room;
+
+    constructor(server: Server, client: Browser, room : Room) {
+        super(server, client);
+        
+        this.room = room;
+    }
+
+    public index(): void {
+
         this.client.view.room(this);
     }
 }

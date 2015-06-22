@@ -11,7 +11,6 @@ import events = require('events');
 import url = require('url');
 import mdns = require('mdns');
 import SocketServer = require('./socketServer');
-import Room = require('./room');
 
 interface QueryObject{
     action: string;
@@ -22,7 +21,6 @@ class Server {
     port: number = 1337;
     httpServer: http.Server;
     socketServer : SocketServer;
-    room : Room;
     address: string;
     eventEmitter: events.EventEmitter;
     
@@ -81,14 +79,6 @@ class Server {
             });
     }
 
-    public listenServer(callback: () => void): void {
-        console.log('listen player');
-        this.eventEmitter.on('connectPlayer', function(socket) {
-            console.log(socket);
-            callback();
-        });
-    }
-    
     private _createSocketServer(callback:(err: any, socketServer : SocketServer ) => void): void{
         var socketServer = new SocketServer(this.httpServer);
         callback(null, socketServer);
@@ -114,13 +104,6 @@ class Server {
         }).listen(this.port, this.address, this.port, () => {        
             callback(null, httpServer);
         });
-
-        /*httpServer.on('request', (request, socket, head) => {
-            var url_parts = url.parse(request.url, true);
-            var query = url_parts.query;
-            
-            this.eventEmitter.emit('connectPlayer', socket);
-        });*/
     }
 
     private _getIp(callback: (err: any, ipv4: string) => void): void {

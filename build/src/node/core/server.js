@@ -45,13 +45,6 @@ var Server = (function () {
             callback();
         });
     }
-    Server.prototype.listenServer = function (callback) {
-        console.log('listen player');
-        this.eventEmitter.on('connectPlayer', function (socket) {
-            console.log(socket);
-            callback();
-        });
-    };
     Server.prototype._createSocketServer = function (callback) {
         var socketServer = new SocketServer(this.httpServer);
         callback(null, socketServer);
