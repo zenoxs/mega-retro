@@ -16,7 +16,8 @@
   "dependencies": {
     "konva": "^0.9.0",
     "mdns": "^2.2.9",
-    "pem": "^1.8.1"
+    "pem": "^1.8.1",
+    "observed": "^1.1.1"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
