@@ -1,4 +1,5 @@
 var http = require('http');
+var pem = require('pem');
 var async = require('async');
 var os = require('os');
 var events = require('events');
@@ -7,7 +8,7 @@ var SocketServer = require('./socketServer');
 var Server = (function () {
     function Server(callback) {
         var _this = this;
-        this.port = 1337;
+        this.port = 3700;
         async.waterfall([
             function (callback) {
                 _this.eventEmitter = new events.EventEmitter();
@@ -55,6 +56,7 @@ var Server = (function () {
                 "access-control-allow-origin": "*",
                 "content-type": "application/json",
             });
+            response.write('Hello Word !!!!');
             return response.end();
         }).listen(this.port, this.address, this.port, function () {
             callback(null, httpServer);

@@ -4,6 +4,9 @@
 /// <reference path="../../../typings/mdns/mdns.d.ts"/>
 
 import http = require('http');
+import https = require('https');
+var pem = require('pem');
+
 import async = require('async');
 import os = require('os');
 import io = require('socket.io');
@@ -18,8 +21,9 @@ interface QueryObject{
 
 class Server {
 	ad: MDNS.Advertisement;
-    port: number = 1337;
+    port: number = 3700;
     httpServer: http.Server;
+    
     socketServer : SocketServer;
     address: string;
     eventEmitter: events.EventEmitter;
@@ -98,6 +102,8 @@ class Server {
                     "content-type": "application/json",
                 }
             );
+            
+            response.write('Hello Word !!!!');
             
             return response.end();
             
