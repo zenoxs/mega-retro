@@ -12,11 +12,13 @@ import RoomController = require('../controllers/roomController');
 class App {
     server: Server;
     room: Room;
-    client : Browser;
+    client: Browser;
     controller: any;
 
     constructor(client: Browser) {
         
+        //console.log('salut');
+
         this.client = client;
         
         // Construct Server
