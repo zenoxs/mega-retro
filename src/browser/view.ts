@@ -11,7 +11,7 @@ class Views {
 		this.stage = stage;
 	}
 
-	room(room: Room) {
+	room(room: RoomController) {
 		return new RoomView(this.stage, room);
 	}
 }

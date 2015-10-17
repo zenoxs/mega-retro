@@ -3,9 +3,9 @@
 
 class RoomView {
 	stage: Konva.Stage;
-	room: Room;
+	room: RoomController;
 
-	constructor(stage: Konva.Stage, room : Room) {
+	constructor(stage: Konva.Stage, room : RoomController) {
 		
 		this.room = room;
 		this.stage = stage;

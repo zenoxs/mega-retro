@@ -8,6 +8,7 @@ import View = require('./view');
 class Browser {
 
 	gui: NW_GUI;
+	win : IWindow;
 	view: View;
 	stage: Konva.Stage;
 
@@ -15,17 +16,22 @@ class Browser {
 		
 		console.log('Browser launch');
 		
-		// display console
-		this.gui = global.window.nwDispatcher.requireNwGui();
 		
+		this.gui = global.window.nwDispatcher.requireNwGui();
+		this.win = this.gui.Window.get();
+		
+		// display console
 		if (debug)
 			this.gui.Window.get().showDevTools();
+			
+		this.win.width = 300;
+		this.win.height = 300;
 
 		// create stage
 		this.stage = new Konva.Stage({
 			container: 'process-canvas',
-			width: 1280,
-			height: 720
+			width: 1920,
+			height: 1080
 		});
 		
 		// instance new ViewManager

@@ -27,10 +27,10 @@ declare class EventEmitter {
 }
 
 
-declare var global : {
-	window : {
-		nwDispatcher : {
-			requireNwGui() : NW_GUI;
+declare var global: {
+	window: {
+		nwDispatcher: {
+			requireNwGui(): NW_GUI;
 		}
 	}
 }
@@ -56,43 +56,45 @@ interface NW_GUI {
 }
 
 //declare module NW_GUI {
-	interface MenuConfig {
-		type?: string;
-	}
+interface MenuConfig {
+	type?: string;
+}
 
-	interface Menu {
-		new (config?: MenuConfig): Menu;
-		items: MenuItem[];
-		append(item: MenuItem): void;
-		remove(item: MenuItem): void;
-		insert(item: MenuItem, atPosition: number): void;
-		removeAt(index: number): void;
-		popup(x: number, y: number): void;
+interface Menu {
+	new (config?: MenuConfig): Menu;
+	items: MenuItem[];
+	append(item: MenuItem): void;
+	remove(item: MenuItem): void;
+	insert(item: MenuItem, atPosition: number): void;
+	removeAt(index: number): void;
+	popup(x: number, y: number): void;
 
-	}
+}
 
 
-	interface MenuItemConfig {
-		label?: string;
-		click?: Function;
-		type?: string;
-		submenu?: Menu;
-		icon?: string;
-		tooltip?: string;
-		checked?: boolean;
-		enabled?: boolean;
-	}
+interface MenuItemConfig {
+	label?: string;
+	click?: Function;
+	type?: string;
+	submenu?: Menu;
+	icon?: string;
+	tooltip?: string;
+	checked?: boolean;
+	enabled?: boolean;
+}
 
-	interface MenuItem extends MenuItemConfig, EventEmitter {
-		new (config: MenuItemConfig): MenuItem;
-	}
+interface MenuItem extends MenuItemConfig, EventEmitter {
+	new (config: MenuItemConfig): MenuItem;
+}
 
-	interface IWindow {
-		menu: Menu;
-		showDevTools(): void;
-		on(event: string, handler: Function): void;
-		close(force: boolean): void;
-	}
+interface IWindow {
+	menu: Menu;
+	showDevTools(): void;
+	on(event: string, handler: Function): void;
+	close(force: boolean): void;
+	height: number;
+	width: number;
+}
 
 //}
 
